@@ -7,4 +7,5 @@ clint.py
 raper.py
 dd.py
 server.py
+.gitignore
 __pycache__/
