@@ -4,7 +4,7 @@ Its an hybrid application leverages on NVIDIA GPU via CUDA to accelerate image c
 
 
 
-working 
+working mechanism 
 
 python layer:
 
