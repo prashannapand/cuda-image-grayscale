@@ -8,4 +8,15 @@ raper.py
 dd.py
 server.py
 .gitignore
+audio_output.wav
+audioin.py
+game_of_life.dll
+game_of_life.exp
+game_of_life.lib
+gpu.cu
+raper.py
+server.py
+pyaudiodp.py
+audioplay.py
+__pycache__\raper.cpython-313.pyc
 __pycache__/
