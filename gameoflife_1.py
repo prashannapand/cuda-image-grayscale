@@ -5,10 +5,10 @@ import sys
 
 pygame.init()
 clock=pygame.time.Clock()
-wi,hi=800,800
+wi,hi=1920,1080
 cell=32
-row,col=wi//cell,hi//cell
-screen=pygame.display.set_mode((hi,wi))
+col, row = hi // cell, wi// cell
+screen=pygame.display.set_mode((wi,hi))
 pygame.display.set_caption("game of life")
 pygame.time.Clock()
 cuda_engine=ctypes.CDLL("D:\gpu com\game_of_life.dll")
@@ -25,7 +25,7 @@ next_grid=np.zeros(row*col,dtype=np.int32)
 in_grid=current_grid.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 out_grid=next_grid.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 
-a=cuda_engine.constructor(in_grid,out_grid,row,col)
+a=cuda_engine.constructor(in_grid,out_grid,col,row)
 print(a)
 drawing=True
 running=True
@@ -40,16 +40,16 @@ while running:
              drawing=True
              current_grid.fill(0)
              next_grid.fill(0)
-    if drawing:
-          if drawing and event.type==pygame.MOUSEBUTTONDOWN:
-             if event.button==1:
-                  mouse_x,mouse_y=pygame.mouse.get_pos()
-                  click_x,click_y=mouse_x//cell,mouse_y//cell
-                  if(click_x<col and click_y<row):
-                        if(current_grid[click_x+click_y*col]==1):
-                           current_grid[click_x+click_y*col]=0
-                        else:
-                           current_grid[click_x+click_y*col]=1
+        if drawing:
+               if drawing and event.type==pygame.MOUSEBUTTONDOWN:
+                  if event.button==1:
+                        mouse_x,mouse_y=pygame.mouse.get_pos()
+                        click_x,click_y=mouse_x//cell,mouse_y//cell
+                        if(click_x<col and click_y<row):
+                              if(current_grid[click_x+click_y*col]==1):
+                                 current_grid[click_x+click_y*col]=0
+                              else:
+                                 current_grid[click_x+click_y*col]=1
     screen.fill(color=(10,10,10))
     grid_2d=current_grid.reshape(row,col)
     for r in range(row):
@@ -60,7 +60,7 @@ while running:
                 (c * cell, r * cell, cell - 1, cell - 1)
              )
     if not drawing:
-       cuda_engine.gameoflife(in_grid,out_grid,row,col)
+       cuda_engine.gameoflife(in_grid,out_grid,col,row)
        np.copyto(current_grid,next_grid)
     pygame.display.flip()
     clock.tick(5)

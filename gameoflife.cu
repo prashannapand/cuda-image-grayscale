@@ -8,6 +8,10 @@ extern"C"
  int alivneb=0;
  int col=blockIdx.x*blockDim.x+threadIdx.x;
  int row=blockDim.y*blockIdx.y+threadIdx.y;
+ if(col>=x_axix || row>=y_axix)
+ {
+    return;
+ }
  int ind=col+x_axix*row;
  for (int i = -1; i < 2; i++)
  {
@@ -82,8 +86,10 @@ extern"C"
         cudaMalloc((void**)&devicgrid,size_dev);
         cudaMalloc((void**)&devicout,size_dev);
         cudaMemcpy(devicgrid,ingrid,size_dev,cudaMemcpyHostToDevice);
-       dim3 block(x_axix,y_axix);
-       dim3 grids(1);
+       dim3 block(16,16);
+       int gnd1=((16+x_axix-1)/16);
+       int gnd2=((16+y_axix-1)/16);
+       dim3 grids(gnd1,gnd2);
        mykernel<<<grids,block>>>(devicgrid,x_axix,y_axix,devicout); 
        cudaMemcpy(outgrid,devicout,size_dev,cudaMemcpyDeviceToHost);
        cudaFree(devicgrid);
