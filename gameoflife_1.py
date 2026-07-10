@@ -36,8 +36,12 @@ while running:
         if event.type==pygame.KEYDOWN:
           if event.key==pygame.K_SPACE:
             drawing=False
-        if drawing:
-            if drawing and event.type==pygame.MOUSEBUTTONDOWN:
+          if event.key==pygame.K_r:
+             drawing=True
+             current_grid.fill(0)
+             next_grid.fill(0)
+    if drawing:
+          if drawing and event.type==pygame.MOUSEBUTTONDOWN:
              if event.button==1:
                   mouse_x,mouse_y=pygame.mouse.get_pos()
                   click_x,click_y=mouse_x//cell,mouse_y//cell
